@@ -5,7 +5,7 @@ dotenv.config();
 
 const MONGO_URI: string =`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster-projects.2wh8y.mongodb.net/${process.env.DB_NAME}`;
 
-const connectDB = async () => {
+const connectDB = async (): Promise<void> => {
     try {
         await mongoose.connect(MONGO_URI);
         console.log('MongoDB connected successfully ✅');
