@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import connectDB from './db/connection';
 
-
 dotenv.config();
 
 const app: Express = express();
