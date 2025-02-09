@@ -1,101 +1,105 @@
-import { Request, Response } from 'express';
-import { Model, Document } from 'mongoose';
-
-class DynamicController<T extends Document> {
-    private _model: Model<T>;
-
-    constructor(model: Model<T>) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class DynamicController {
+    _model;
+    constructor(model) {
         this._model = model;
     }
-
-    index = async (req: Request, res: Response): Promise<Response> => {
+    index = async (req, res) => {
         try {
-            const data: any = await this._model.find();
+            const data = await this._model.find();
             return res.status(200).json({
                 status: true,
                 message: 'data found',
                 total: data.length,
                 data: data,
             });
-        } catch(err: unknown) {
-            const errMessage: string = err instanceof Error ? err.message : 'data not found';
+        }
+        catch (err) {
+            const errMessage = err instanceof Error ? err.message : 'data not found';
             return res.status(404).json({
                 status: false,
                 message: errMessage,
             });
         }
-    }
-
-    show = async (req: Request, res: Response): Promise<Response> => {
+    };
+    show = async (req, res) => {
         try {
-            const data: any = await this._model.findOne({ _id: req.params.id });
+            const data = await this._model.findOne({ _id: req.params.id });
             return res.status(200).json({
                 status: true,
                 message: 'data found',
                 total: data.length,
                 data: data,
             });
-        } catch(err: unknown) {
-            const errMessage: string = err instanceof Error ? err.message : 'data not found';
+        }
+        catch (err) {
+            const errMessage = err instanceof Error ? err.message : 'data not found';
             return res.status(404).json({
                 status: false,
                 message: errMessage,
             });
         }
-    }
-
-    store = async (req: Request, res: Response): Promise<Response> => {
+    };
+    store = async (req, res) => {
         try {
-            const createdData: T | null = await this._model.create(req.body);
-            if (!createdData) { throw new Error('failed to store data') }
+            const createdData = await this._model.create(req.body);
+            if (!createdData) {
+                throw new Error('failed to store data');
+            }
             return res.status(201).json({
                 status: true,
                 message: 'data sent successfully',
                 data: createdData,
             });
-        } catch(err: unknown) {
+        }
+        catch (err) {
             const errMessage = err instanceof Error ? err.message : 'failed to store dadta';
             return res.status(404).json({
                 status: false,
                 message: errMessage,
             });
         }
-    }
-
-    update = async (req: Request, res: Response): Promise<Response> => {
+    };
+    update = async (req, res) => {
         try {
-            const updatedData: T | null = await this._model.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true });
-            if (!updatedData) { throw new Error('failed to update data') }
+            const updatedData = await this._model.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true });
+            if (!updatedData) {
+                throw new Error('failed to update data');
+            }
             return res.status(201).json({
                 status: true,
                 message: 'data update successfully',
                 data: updatedData,
             });
-        } catch(err: unknown) {
+        }
+        catch (err) {
             const errMessage = err instanceof Error ? err.message : 'failed to update data';
             return res.status(404).json({
                 status: false,
                 message: errMessage,
             });
         }
-    }
-
-    delete = async (req: Request, res: Response): Promise<Response> => {
+    };
+    delete = async (req, res) => {
         try {
-            const deletedData: T | null = await this._model.findOneAndDelete({ _id: req.params.id });
-            if (!deletedData) { throw new Error('failed to delete data') };
+            const deletedData = await this._model.findOneAndDelete({ _id: req.params.id });
+            if (!deletedData) {
+                throw new Error('failed to delete data');
+            }
+            ;
             return res.status(204).json({
                 status: true,
                 message: 'data was deleted',
             });
-        } catch (err: unknown) {
-            const errMessage: string = err instanceof Error ? err.message : 'failed to delete data';
+        }
+        catch (err) {
+            const errMessage = err instanceof Error ? err.message : 'failed to delete data';
             return res.status(404).json({
                 status: false,
                 message: errMessage,
             });
         }
-    }
+    };
 }
-
-export default DynamicController
+exports.default = DynamicController;

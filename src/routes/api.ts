@@ -1,16 +1,27 @@
-import DynamicController from '../controllers/DynamicController';
-import express, { Router } from 'express';
-import { Document } from 'mongoose';
+import dynamicController from '../controllers/DynamicController';
+import express, { Router, Request, Response } from 'express';
+import { Document, Model } from 'mongoose';
 
-const dynamicRoute = (model: any) => {
+
+const dynamicRoute = <T>(model: Model<any>): Router => {
     const router: Router = express.Router();
-    const dynamicController: any = new DynamicController(model);
+    const controller = new dynamicController(model);
 
-    router.get('/', dynamicController.index);
-    router.get('/:id', dynamicController.show);
-    router.post('/', dynamicController.create);
-    router.put('/:id', dynamicController.update);
-    router.delete('/:id', dynamicController.delete);
+    router.get('/', (req: Request, res: Response) => {
+        controller.index(req, res)
+    });
+    router.get('/:id', (req: Request, res: Response) => {
+        controller.show(req, res)
+    });
+    router.post('/', (req: Request, res: Response) => {
+        controller.store(req, res)
+    });
+    router.put('/:id', (req: Request, res: Response) => {
+        controller.update(req, res)
+    });
+    router.delete('/:id', (req: Request, res: Response) => {
+        controller.delete(req, res)
+    });
     
     return router;
 }
