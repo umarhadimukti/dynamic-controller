@@ -15,7 +15,7 @@ type IProductDocument = IProduct & Document;
 
 const productSchema = new Schema<IProductDocument>(
     {
-        categoryId: { type: Schema.Types.ObjectId, ref: 'Category', },
+        categoryId: { type: Schema.Types.ObjectId, ref: 'Category', required: true, },
         name: { type: String, required: true, },
         status: { type: Boolean, default: true, },
         price: { type: Number, required: true, },
