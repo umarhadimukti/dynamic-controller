@@ -14,7 +14,7 @@ type ICategoryDocument = ICategory & Document;
 const categorySchema = new Schema<ICategoryDocument>(
     {
         name: { type: String, required: true, },
-        status: { type: Boolean, required: true, },
+        status: { type: Boolean, default: true, },
         description: { type: String, required: false, },
     },
     {
