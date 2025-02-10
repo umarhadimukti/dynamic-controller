@@ -13,7 +13,7 @@ class DynamicController<T extends Document> {
             const data: any = await this._model.find();
             return res.status(200).json({
                 status: true,
-                message: 'data found',
+                message: data.length > 0 ? `data found` : `data empty`,
                 total: data.length,
                 data: data,
             });
@@ -84,7 +84,7 @@ class DynamicController<T extends Document> {
         try {
             const deletedData: T | null = await this._model.findOneAndDelete({ _id: req.params.id });
             if (!deletedData) { throw new Error('failed to delete data') };
-            return res.status(204).json({
+            return res.status(200).json({
                 status: true,
                 message: 'data was deleted',
             });

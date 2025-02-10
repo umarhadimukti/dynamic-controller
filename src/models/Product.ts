@@ -1,11 +1,25 @@
 import mongoose from 'mongoose';
 
-const { Model, Document, Schema, model } = mongoose;
+const { Schema, model } = mongoose;
 
-const productSchemaa = new Schema(
+interface IProduct {
+    _id: mongoose.Types.ObjectId,
+    categoryId: mongoose.Types.ObjectId,
+    name: string,
+    status: boolean,
+    price: number,
+    description?: string,
+}
+
+type IProductDocument = IProduct & Document;
+
+const productSchema = new Schema<IProductDocument>(
     {
+        categoryId: { type: Schema.Types.ObjectId, ref: 'Category', },
         name: { type: String, required: true, },
-        category_id: { type: Number, required: true, },
+        status: { type: Boolean, default: true, },
+        price: { type: Number, required: true, },
+        description: { type: String, required: false, },
     },
     {
         timestamps: true,
@@ -14,6 +28,7 @@ const productSchemaa = new Schema(
     }
 );
 
-const Product = model('Product', productSchemaa);
+const Product = model<IProductDocument>('Product', productSchema);
 
 export default Product;
+export { IProduct, IProductDocument };
