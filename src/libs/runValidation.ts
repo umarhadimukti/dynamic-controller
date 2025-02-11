@@ -4,7 +4,7 @@ import { validationResult } from "express-validator";
 export default (req: Request, res: Response, next: NextFunction): void => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-        res.status(400).json({ errorMessage: result.array() });
+        res.status(400).json({ errors: result.array() });
     } else {
         next();
     }

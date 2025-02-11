@@ -7,8 +7,8 @@ const app: Express = express();
 app.post(
     '/categories',
     checkSchema({
-        name: { notEmpty: true },
-        status: { notEmpty: true },
+        name: { notEmpty: true, errorMessage: 'nama kategori harus diisi.' },
+        status: { notEmpty: true, errorMessage: 'status harus diisi.' },
     }),
     runValidation
 );
