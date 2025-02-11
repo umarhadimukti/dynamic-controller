@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const { Schema, Model, Document, model } = mongoose;
+const { Schema, model } = mongoose;
 
 interface ICategory extends Document {
     _id: mongoose.Types.ObjectId,
