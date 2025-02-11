@@ -8,7 +8,7 @@ const { Schema, model } = mongoose_1.default;
 ;
 const categorySchema = new Schema({
     // name: { type: String, required: true, },
-    status: { type: Boolean, default: true, },
+    // status: { type: Boolean, default: true, },
     description: { type: String, required: false, },
 }, {
     timestamps: true,
