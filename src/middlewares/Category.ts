@@ -39,6 +39,17 @@ app.put(
         },
     }),
     runValidation
-)
+);
+app.delete(
+    '/categories/:id',
+    checkSchema({
+        id: {
+            notEmpty: true,
+            in: 'params',
+            errorMessage: 'id harus dimasukkan',
+        },
+    }),
+    runValidation,
+);
 
 export default app;

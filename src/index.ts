@@ -5,6 +5,7 @@ import dynamicRoute from './routes/api';
 import Category from './models/Category';
 import Product from './models/Product';
 import CategoryMiddleware from './middlewares/Category';
+import ProductMiddleware from './middlewares/Product';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ connectDB();
 
 // middleware express-validator (for sanitazion input)
 app.use(CategoryMiddleware);
+app.use(ProductMiddleware);
 
 // middleware routes
 app.use('/categories', dynamicRoute(Category));
