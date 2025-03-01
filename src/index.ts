@@ -1,11 +1,9 @@
 import express, { Express, Response, Request } from 'express';
 import dotenv from 'dotenv';
 import connectDB from './db/connection';
-import dynamicRoute from './routes/api';
-import Category from './models/Category';
-import Product from './models/Product';
 import CategoryMiddleware from './middlewares/Category';
 import ProductMiddleware from './middlewares/Product';
+import LoadModels from './models/LoadModels';
 
 dotenv.config();
 
@@ -24,7 +22,6 @@ app.use(CategoryMiddleware);
 app.use(ProductMiddleware);
 
 // middleware routes
-app.use('/categories', dynamicRoute(Category));
-app.use('/products', dynamicRoute(Product));
+app.use(LoadModels);
 
 app.listen(port, () => console.log(`server running at port ${ port }`));
