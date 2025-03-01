@@ -1,9 +1,8 @@
 import express, { Express, Response, Request } from 'express';
 import dotenv from 'dotenv';
 import connectDB from './db/connection';
-import CategoryMiddleware from './middlewares/Category';
-import ProductMiddleware from './middlewares/Product';
 import LoadModels from './models/LoadModels';
+import LoadMiddleware from './middlewares/LoadMiddleware';
 
 dotenv.config();
 
@@ -18,8 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 // middleware express-validator (for sanitazion input)
-app.use(CategoryMiddleware);
-app.use(ProductMiddleware);
+app.use(LoadMiddleware);
 
 // middleware routes
 app.use(LoadModels);
