@@ -1,12 +1,11 @@
 import express, { Express } from 'express';
-import { checkSchema } from 'express-validator';
-import runValidation from '../libs/runValidation';
+import InputValidation from '../libs/InputValidation';
 
 const app: Express = express();
 
 app.post(
     '/products',
-    checkSchema({
+    ...InputValidation.validate({
         categoryId: {
             notEmpty: true,
             in: 'body',
@@ -42,13 +41,12 @@ app.post(
             },
             errorMessage: 'deskripsi harus diisi',
         },
-    }),
-    runValidation,
+    })
 );
 
 app.put(
     '/products/:id',
-    checkSchema({
+    ...InputValidation.validate({
         id: {
             notEmpty: true,
             in: 'params',
@@ -96,12 +94,11 @@ app.put(
                 errorMessage: 'deskripsi harus karakter'
             },
         },
-    }),
-    runValidation,
+    })
 );
 app.delete(
     '/products/:id',
-    checkSchema({
+    ...InputValidation.validate({
         id: {
             notEmpty: true,
             in: 'params',
@@ -109,8 +106,7 @@ app.delete(
                 errorMessage: 'produk id harus diisi',
             },
         },
-    }),
-    runValidation,
+    })
 );
 
 export default app;
