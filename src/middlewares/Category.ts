@@ -1,6 +1,4 @@
 import express, { Express } from 'express';
-import { checkSchema } from 'express-validator';
-import runValidation from '../libs/runValidation';
 import InputValidation from '../libs/InputValidation';
 
 const app: Express = express();
@@ -14,7 +12,7 @@ app.post(
 );
 app.put(
     '/categories/:id',
-    checkSchema({
+    ...InputValidation.validate({
         id: {
             notEmpty: true,
             errorMessage: 'id kategori harus di masukkan.',
@@ -37,19 +35,17 @@ app.put(
                 errorMessage: 'tipe data status harus boolean.',
             },
         },
-    }),
-    runValidation
+    })
 );
 app.delete(
     '/categories/:id',
-    checkSchema({
+    ...InputValidation.validate({
         id: {
             notEmpty: true,
             in: 'params',
             errorMessage: 'id harus dimasukkan',
         },
-    }),
-    runValidation,
+    })
 );
 
 export default app;
