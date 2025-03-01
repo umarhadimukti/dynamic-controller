@@ -1,16 +1,16 @@
 import express, { Express } from 'express';
 import { checkSchema } from 'express-validator';
 import runValidation from '../libs/runValidation';
+import InputValidation from '../libs/InputValidation';
 
 const app: Express = express();
 
 app.post(
     '/categories',
-    checkSchema({
+    ...InputValidation.validate({
         name: { notEmpty: true, errorMessage: 'nama kategori harus diisi.' },
-        status: { notEmpty: true, errorMessage: 'status harus diisi.' },
-    }),
-    runValidation
+        status: { notEmpty: true, errorMessage: 'status harus diisi.' }
+    })
 );
 app.put(
     '/categories/:id',
