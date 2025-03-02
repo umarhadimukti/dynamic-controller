@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import connectDB from './db/connection';
 import LoadModels from './models/LoadModels';
 import LoadMiddleware from './middlewares/LoadMiddleware';
+import systemRoutes from './system/routes/system';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ connectDB();
 app.use(LoadMiddleware);
 
 // middleware routes
+app.use(systemRoutes);
 app.use(LoadModels);
 
 app.listen(port, () => console.log(`server running at port ${ port }`));
