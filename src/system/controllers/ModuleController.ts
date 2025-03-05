@@ -27,27 +27,43 @@ export default class ModuleController
         }
     }
 
-    public generateModel = async (req: Request): Promise<boolean> => {
+    protected generateModel = async (req: Request): Promise<boolean> =>
+    {
         try {
             // read template
             const locationTemplate = `${this.systemDir}/templates/model.ts`;
             const templateModel = await fs.readFile(locationTemplate, 'utf-8');
 
-            // new filename
-            const fileName = req.query.model?.toString().trim();
-            if (!fileName) {
-                console.error(`invalid model name.`);
-                return false;
-            }
+            const modelName = this.mergeModelName(req);
+
+            // replace content (file)
+            let newTemplateModel = templateModel.replaceAll('varSchema', modelName);
 
             // write new file
-            await fs.writeFile(`${this.modelDir}/${fileName}.ts`, templateModel, 'utf-8');
+            await fs.writeFile(`${this.modelDir}/${modelName}.ts`, newTemplateModel, 'utf-8');
             
             return true;
         } catch (err) {
             console.log(`failed to generate model: ${err instanceof Error ? err.message : 'unknown error'}`);
             return false;
         }
+    }
 
+    protected mergeModelName = (req: Request): string => {
+        // new filename
+        const fileName: string | undefined = req.query.model?.toString().trim();
+        if (!fileName) {
+            console.error(`invalid model name.`);
+            return '';
+        }
+
+        // remove space
+        const removeSpaceFileName = fileName.split(' ').join('');
+
+        // merge word
+        return removeSpaceFileName
+            .split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join('');
     }
 }

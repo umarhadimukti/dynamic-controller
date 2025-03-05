@@ -5,7 +5,7 @@ const { Schema, model } = mongoose;
 
 type ISchema = Document;
 
-const varSchema = new Schema<ISchema>(
+const UserModel = new Schema<ISchema>(
     {
         // scheme here..
     },
@@ -30,6 +30,6 @@ const varSchema = new Schema<ISchema>(
     }
 );
 
-const TableSchema = model<ISchema>('modelName', varSchema);
+const TableSchema = model<ISchema>('modelName', UserModel);
 
 export default TableSchema;
