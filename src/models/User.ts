@@ -3,11 +3,17 @@ import moment from 'moment';
 
 const { Schema, model } = mongoose;
 
-type ISchema = Document;
+interface IUser extends Document
+{
+    _id: mongoose.Types.ObjectId,
+    // schema type
+}
 
-const UserSchema = new Schema<ISchema>(
+type IUserSchema = IUser & Document;
+
+const UserSchema = new Schema<IUserSchema>(
     {
-        // scheme here..
+        // schema
     },
     {
         timestamps: true,
@@ -30,6 +36,6 @@ const UserSchema = new Schema<ISchema>(
     }
 );
 
-const User = model<ISchema>('User', UserSchema);
+const User = model<IUserSchema>('User', UserSchema);
 
 export default User;

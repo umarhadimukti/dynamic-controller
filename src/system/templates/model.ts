@@ -3,11 +3,17 @@ import moment from 'moment';
 
 const { Schema, model } = mongoose;
 
-type ISchema = Document;
+interface IModel extends Document
+{
+    _id: mongoose.Types.ObjectId,
+    // schema type
+}
+
+type ISchema = IModel & Document;
 
 const varSchema = new Schema<ISchema>(
     {
-        // scheme here..
+        // schema
     },
     {
         timestamps: true,

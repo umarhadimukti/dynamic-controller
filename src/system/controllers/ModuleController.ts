@@ -73,6 +73,9 @@ export default class ModuleController
             .replaceAll('varSchema', `${modelName}Schema`)
             .replaceAll('TableSchema', `${modelName}`)
             .replaceAll('modelName', `${modelName}`)
+            .replaceAll('IModel', `I${modelName}`)
+            .replaceAll('ISchema', `I${modelName}Schema`);
+
 
         await fs.writeFile(`${this.modelDir}/${modelName}.ts`, updatedModel, 'utf-8'); 
     }
