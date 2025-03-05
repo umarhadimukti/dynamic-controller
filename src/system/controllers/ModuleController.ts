@@ -36,8 +36,10 @@ export default class ModuleController
 
             if (!this.mergeModelName(req)) return false;
 
+            // model name
             const modelName = this.mergeModelName(req);
 
+            // replace content of new model
             await this.replaceContent(modelName, templateModel);
             
             return true;
