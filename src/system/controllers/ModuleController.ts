@@ -34,6 +34,8 @@ export default class ModuleController
             const locationTemplate = `${this.systemDir}/templates/model.ts`;
             const templateModel = await fs.readFile(locationTemplate, 'utf-8');
 
+            if (!this.mergeModelName(req)) return false;
+            
             const modelName = this.mergeModelName(req);
 
             // replace content (file)
