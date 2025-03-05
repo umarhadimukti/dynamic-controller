@@ -35,14 +35,10 @@ export default class ModuleController
             const templateModel = await fs.readFile(locationTemplate, 'utf-8');
 
             if (!this.mergeModelName(req)) return false;
-            
+
             const modelName = this.mergeModelName(req);
 
-            // replace content (file)
-            let newTemplateModel = templateModel.replaceAll('varSchema', modelName);
-
-            // write new file
-            await fs.writeFile(`${this.modelDir}/${modelName}.ts`, newTemplateModel, 'utf-8');
+            await this.replaceContent(modelName, templateModel);
             
             return true;
         } catch (err) {
@@ -67,5 +63,15 @@ export default class ModuleController
             .split('-')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
             .join('');
+    }
+
+    protected replaceContent = async (modelName: string, templateModel: string): Promise<void> =>
+    {
+        let updatedModel = templateModel
+            .replaceAll('varSchema', `${modelName}Schema`)
+            .replaceAll('TableSchema', `${modelName}`)
+            .replaceAll('modelName', `${modelName}`)
+
+        await fs.writeFile(`${this.modelDir}/${modelName}.ts`, updatedModel, 'utf-8'); 
     }
 }
