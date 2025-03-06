@@ -3,15 +3,18 @@ import moment from 'moment';
 
 const { Schema, model } = mongoose;
 
-interface IModel extends Document
+interface IUser extends Document
 {
     _id: mongoose.Types.ObjectId,
-    // type
+        name: string,
+    description: string,
+    test: Date
+
 }
 
-type ISchema = IModel & Document;
+type IUserSchema = IUser & Document;
 
-const varSchema = new Schema<ISchema>(
+const UserSchema = new Schema<IUserSchema>(
     {	
     name:  {
         type: String,
@@ -22,7 +25,7 @@ const varSchema = new Schema<ISchema>(
         required:  true
     },		
     test:  {
-        type:  "Object",
+        type: Date,
         required:  false
     }
 	},
@@ -47,6 +50,6 @@ const varSchema = new Schema<ISchema>(
     }
 );
 
-const TableSchema = model<ISchema>('modelName', varSchema);
+const User = model<IUserSchema>('User', UserSchema);
 
-export default TableSchema;
+export default User;

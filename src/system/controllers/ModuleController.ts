@@ -30,38 +30,41 @@ export default class ModuleController
     protected generateModel = async (req: Request): Promise<boolean> =>
     {
         try {
+            const modelName = this.mergeModelName(req);
+
+            if (!modelName) return false;
+
             // read template
             const locationTemplate = `${this.systemDir}/templates/model.ts`;
             const templateModel = await fs.readFile(locationTemplate, 'utf-8');
 
-            if (!this.mergeModelName(req)) return false;
+            const modelPath = `${this.modelDir}/${modelName}.ts`;
+            let existingModel = '';
+            // check if model exist
+            try {
+                existingModel = await fs.readFile(modelPath, 'utf-8');
+            } catch (err) {
+                // if there is no model, use default template
+                existingModel = templateModel;
+            }
 
-            // model name
-            const modelName = this.mergeModelName(req);
-
-            // replace content of new model
-            await this.replaceContent(modelName, templateModel);
+            // change placeholder content
+            let updatedTemplate = existingModel;
+            updatedTemplate = await this.replaceContent(modelName, updatedTemplate);
 
             const { schema, types } = req.body;
-            if (schema) {
-                let contentSchema = JSON.stringify(schema, null, 4);
-                contentSchema = contentSchema
-                    .replace(/"(\w+)"\s*:/g, '$1:')
-                    .replace(/type:\s*"String"/g, 'type:String')
-                    .replace(/type:\s*"Boolean"/g, 'type:Boolean')
-                    .replace(/type:\s*"Date"/g, 'type:Date')
-                    .replace(/type:\s*"Number"/g, 'type:Number');
+            if (schema || types) {
+                if (schema) {
+                    let updatedContent = this.formatSchemaContent(schema);
+                    updatedTemplate = updatedTemplate.replace('{},//schema', updatedContent);
+                }
 
-                const updatedContent = contentSchema
-                    .replace('{', '{\t')
-                    .replaceAll('},', '},\t\t')
-                    .replaceAll(':', ':\xa0')
-                    .replace('}\n}', '}\n\t},')
-                console.log(updatedContent)
-                
-                const updatedTemplate = templateModel.replace('{},//schema', updatedContent);
-                await fs.writeFile(`${this.modelDir}/${modelName}.ts`, updatedTemplate, 'utf-8')
-                console.log(true)
+                if (types) {
+                    let updatedTypes = this.formatTypesContent(types);
+                    updatedTemplate = updatedTemplate.replace('// type', updatedTypes);
+                }
+
+                await fs.writeFile(`${this.modelDir}/${modelName}.ts`, updatedTemplate, 'utf-8');
             }
             
             return true;
@@ -69,6 +72,27 @@ export default class ModuleController
             console.log(`failed to generate model: ${err instanceof Error ? err.message : 'unknown error'}`);
             return false;
         }
+    }
+
+    // Fungsi untuk memformat schema agar lebih rapi
+    protected formatSchemaContent(schema: string) {
+        return JSON.stringify(schema, null, 4)
+            .replace(/"(\w+)"\s*:/g, '$1:') // hapus tanda kutip di key
+            .replace(/type:\s*"(\w+)"/g, 'type:$1') // ubah tipe data ke format TypeScript
+            .replace('{', '{\t')
+            .replaceAll('},', '},\t\t')
+            .replaceAll(':', ':\xa0')
+            .replace('}\n}', '}\n\t},');
+    }
+
+    // Fungsi untuk memformat types agar lebih rapi
+    protected formatTypesContent(types: string) {
+        return JSON.stringify(types, null, 4)
+            .replace(/"(\w+)"\s*:/g, '$1:') // hapus tanda kutip di key
+            .replace(/:\s*"(\w+)"/g, ':$1') // ubah tipe data ke format TypeScript
+            .replace('{\n', '')
+            .replaceAll(':', ':\xa0')
+            .replace('}', '');
     }
 
     protected mergeModelName = (req: Request): string => {
@@ -89,16 +113,13 @@ export default class ModuleController
             .join('');
     }
 
-    protected replaceContent = async (modelName: string, templateModel: string): Promise<void> =>
+    protected replaceContent = async (modelName: string, modelContent: string): Promise<string> =>
     {
-        let updatedModel = templateModel
+        return modelContent
             .replaceAll('varSchema', `${modelName}Schema`)
             .replaceAll('TableSchema', `${modelName}`)
             .replaceAll('modelName', `${modelName}`)
             .replaceAll('IModel', `I${modelName}`)
             .replaceAll('ISchema', `I${modelName}Schema`);
-
-
-        await fs.writeFile(`${this.modelDir}/${modelName}.ts`, updatedModel, 'utf-8'); 
     }
 }
