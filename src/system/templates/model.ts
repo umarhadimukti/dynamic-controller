@@ -6,15 +6,13 @@ const { Schema, model } = mongoose;
 interface IModel extends Document
 {
     _id: mongoose.Types.ObjectId,
-    // schema type
+    // type
 }
 
 type ISchema = IModel & Document;
 
 const varSchema = new Schema<ISchema>(
-    {
-        // schema
-    },
+    {},//schema
     {
         timestamps: true,
         toJSON: {

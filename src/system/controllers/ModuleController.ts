@@ -41,6 +41,28 @@ export default class ModuleController
 
             // replace content of new model
             await this.replaceContent(modelName, templateModel);
+
+            const { schema, types } = req.body;
+            if (schema) {
+                let contentSchema = JSON.stringify(schema, null, 4);
+                contentSchema = contentSchema
+                    .replace(/"(\w+)"\s*:/g, '$1:')
+                    .replace(/type:\s*"String"/g, 'type:String')
+                    .replace(/type:\s*"Boolean"/g, 'type:Boolean')
+                    .replace(/type:\s*"Date"/g, 'type:Date')
+                    .replace(/type:\s*"Number"/g, 'type:Number');
+
+                const updatedContent = contentSchema
+                    .replace('{', '{\t')
+                    .replaceAll('},', '},\t\t')
+                    .replaceAll(':', ':\xa0')
+                    .replace('}\n}', '}\n\t},')
+                console.log(updatedContent)
+                
+                const updatedTemplate = templateModel.replace('{},//schema', updatedContent);
+                await fs.writeFile(`${this.modelDir}/${modelName}.ts`, updatedTemplate, 'utf-8')
+                console.log(true)
+            }
             
             return true;
         } catch (err) {
