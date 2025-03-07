@@ -8,12 +8,34 @@ export default class ModuleController
     protected systemDir: string = './src/system';
     protected modelDir: string = './src/models';
 
+    public updateLoadModel = async (req: Request): Promise<boolean> =>
+    {
+        const { model } = req.body;
+        const loadModelsPath: string = './src/models/LoadModels.ts';
+        
+        try {
+            let loadModelsContent = await fs.readFile(loadModelsPath, 'utf-8');
+            let updatedContent = loadModelsContent.replace('export default app', '');
+            updatedContent += `import ${model} from "./${model};"`;
+            updatedContent += '\nexport default app;';
+
+            return true;
+        } catch (err) {
+            console.log(err instanceof Error ? err.message : 'unknown error');
+            return false;
+        }
+    }
+
     public createModel = async (req: Request, res: Response): Promise<Response> =>
     {
         try {
+            const modelName = this.mergeModelName(req);
+            if (!modelName) {
+                throw new Error('invalid model name');
+            }
             const generateModel = await this.generateModel(req);
             if (!generateModel) {
-                throw new Error('invalid model name!');
+                throw new Error('failed to generate model');
             }
             return res.status(200).json({
                 status: true,
@@ -31,8 +53,6 @@ export default class ModuleController
     {
         try {
             const modelName = this.mergeModelName(req);
-
-            if (!modelName) return false;
 
             // read template
             const locationTemplate = `${this.systemDir}/templates/model.ts`;
