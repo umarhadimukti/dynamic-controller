@@ -16,6 +16,11 @@ export default class ModuleController
         
         try {
             let loadModelsContent: string = await fs.readFile(loadModelsPath, 'utf-8');
+
+            if (loadModelsContent.includes(`./${modelName}`)) {
+                throw new Error('model already exists.');
+            }
+
             let updatedContent = loadModelsContent.replace('export default app;', '');
             updatedContent += `import ${modelName} from "./${modelName}";`;
             updatedContent += `\napp.use('/${endpoint}', dynamicRoute(${modelName}));`;
@@ -24,8 +29,7 @@ export default class ModuleController
 
             return true;
         } catch (err) {
-            console.log(err instanceof Error ? err.message : 'unknown error');
-            return false;
+            throw new Error(err instanceof Error ? err.message : 'failed to load model.');
         }
     }
 
@@ -37,10 +41,7 @@ export default class ModuleController
                 throw new Error('invalid model name');
             }
 
-            const updateLoadModel = await this.updateLoadModel(req);
-            if (!updateLoadModel) {
-                throw new Error('failed to load model');
-            }
+            await this.updateLoadModel(req);
 
             const generateModel = await this.generateModel(req);
             if (!generateModel) {
