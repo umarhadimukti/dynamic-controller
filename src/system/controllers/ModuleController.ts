@@ -15,7 +15,7 @@ export default class ModuleController
         const modelName:string = this.mergeModelName(req);
         
         try {
-            let loadModelsContent = await fs.readFile(loadModelsPath, 'utf-8');
+            let loadModelsContent: string = await fs.readFile(loadModelsPath, 'utf-8');
             let updatedContent = loadModelsContent.replace('export default app;', '');
             updatedContent += `import ${modelName} from "./${modelName}";`;
             updatedContent += `\napp.use('/${endpoint}', dynamicRoute(${modelName}));`;
@@ -32,7 +32,7 @@ export default class ModuleController
     public createModel = async (req: Request, res: Response): Promise<Response> =>
     {
         try {
-            const modelName = this.mergeModelName(req);
+            const modelName: string = this.mergeModelName(req);
             if (!modelName) {
                 throw new Error('invalid model name');
             }
@@ -61,14 +61,14 @@ export default class ModuleController
     protected generateModel = async (req: Request): Promise<boolean> =>
     {
         try {
-            const modelName = this.mergeModelName(req);
+            const modelName: string = this.mergeModelName(req);
 
             // read template
-            const locationTemplate = `${this.systemDir}/templates/model.ts`;
-            const templateModel = await fs.readFile(locationTemplate, 'utf-8');
+            const locationTemplate: string = `${this.systemDir}/templates/model.ts`;
+            const templateModel: string = await fs.readFile(locationTemplate, 'utf-8');
 
-            const modelPath = `${this.modelDir}/${modelName}.ts`;
-            let existingModel = '';
+            const modelPath: string = `${this.modelDir}/${modelName}.ts`;
+            let existingModel: string = '';
             // check if model exist
             try {
                 existingModel = await fs.readFile(modelPath, 'utf-8');
