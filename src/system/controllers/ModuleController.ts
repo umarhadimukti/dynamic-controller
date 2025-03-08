@@ -112,7 +112,8 @@ export default class ModuleController
             .replace('{', '{\t')
             .replaceAll('},', '},\t\t')
             .replaceAll(':', ':\xa0')
-            .replace('}\n}', '}\n\t},');
+            .replace('}\n}', '}\n\t},')
+            .replaceAll('"Schema.Types.ObjectId"', 'Schema.Types.ObjectId')
     }
 
     // Fungsi untuk memformat types agar lebih rapi
@@ -122,7 +123,8 @@ export default class ModuleController
             .replace(/:\s*"(\w+)"/g, ':$1') // ubah tipe data ke format TypeScript
             .replace('{\n', '')
             .replaceAll(':', ':\xa0')
-            .replace('}', '');
+            .replace('}', '')
+            .replaceAll('"mongoose.Types.ObjectId"', 'mongoose.Types.ObjectId');
     }
 
     protected mergeModelName = (req: Request): string => {
