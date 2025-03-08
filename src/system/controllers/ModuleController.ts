@@ -12,7 +12,7 @@ export default class ModuleController
     {
         const { endpoint } = req.query;
         const loadModelsPath: string = './src/models/LoadModels.ts';
-        const modelName = this.mergeModelName(req);
+        const modelName:string = this.mergeModelName(req);
         
         try {
             let loadModelsContent = await fs.readFile(loadModelsPath, 'utf-8');
