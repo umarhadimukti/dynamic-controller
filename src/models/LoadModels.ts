@@ -12,4 +12,7 @@ app.use('/products', dynamicRoute(Product));
 import User from "./User";
 app.use('/users', dynamicRoute(User));
 
+import MfProposal from "./MfProposal";
+app.use('/proposals', dynamicRoute(MfProposal));
+
 export default app;
