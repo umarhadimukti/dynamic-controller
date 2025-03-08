@@ -9,4 +9,6 @@ app.use('/categories', dynamicRoute(Category));
 import Product from "./Product";
 app.use('/products', dynamicRoute(Product));
 
+import User from "./User";
+
 export default app;

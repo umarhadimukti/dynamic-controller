@@ -10,14 +10,15 @@ export default class ModuleController
 
     public updateLoadModel = async (req: Request): Promise<boolean> =>
     {
-        const { model } = req.body;
+        const { model } = req.query;
         const loadModelsPath: string = './src/models/LoadModels.ts';
         
         try {
             let loadModelsContent = await fs.readFile(loadModelsPath, 'utf-8');
-            let updatedContent = loadModelsContent.replace('export default app', '');
-            updatedContent += `import ${model} from "./${model};"`;
-            updatedContent += '\nexport default app;';
+            let updatedContent = loadModelsContent.replace('export default app;', '');
+            updatedContent += `import ${model} from "./${model}";`;
+            updatedContent += '\n\nexport default app;';
+            await fs.writeFile(loadModelsPath, updatedContent, 'utf-8');
 
             return true;
         } catch (err) {
@@ -33,6 +34,12 @@ export default class ModuleController
             if (!modelName) {
                 throw new Error('invalid model name');
             }
+
+            const updateLoadModel = await this.updateLoadModel(req);
+            if (!updateLoadModel) {
+                throw new Error('failed to load model');
+            }
+
             const generateModel = await this.generateModel(req);
             if (!generateModel) {
                 throw new Error('failed to generate model');
