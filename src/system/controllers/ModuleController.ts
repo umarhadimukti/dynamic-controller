@@ -10,13 +10,14 @@ export default class ModuleController
 
     public updateLoadModel = async (req: Request): Promise<boolean> =>
     {
-        const { model } = req.query;
+        const { model, endpoint } = req.query;
         const loadModelsPath: string = './src/models/LoadModels.ts';
         
         try {
             let loadModelsContent = await fs.readFile(loadModelsPath, 'utf-8');
             let updatedContent = loadModelsContent.replace('export default app;', '');
             updatedContent += `import ${model} from "./${model}";`;
+            updatedContent += `\napp.use('/${endpoint}', dynamicRoute(${model}));`;
             updatedContent += '\n\nexport default app;';
             await fs.writeFile(loadModelsPath, updatedContent, 'utf-8');
 

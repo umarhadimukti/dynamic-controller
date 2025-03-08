@@ -10,5 +10,6 @@ import Product from "./Product";
 app.use('/products', dynamicRoute(Product));
 
 import User from "./User";
+app.use('/users', dynamicRoute(User));
 
 export default app;
