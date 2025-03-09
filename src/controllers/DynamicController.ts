@@ -8,7 +8,8 @@ class DynamicController<T extends Document> {
         this._model = model;
     }
 
-    index = async (req: Request, res: Response): Promise<Response> => {
+    public index = async (req: Request, res: Response): Promise<Response> =>
+    {
         try {
             const data: any = await this._model.find();
             return res.status(200).json({
@@ -26,7 +27,8 @@ class DynamicController<T extends Document> {
         }
     }
 
-    show = async (req: Request, res: Response): Promise<Response> => {
+    public show = async (req: Request, res: Response): Promise<Response> =>
+    {
         try {
             const data: any = await this._model.findOne({ _id: req.params.id });
             return res.status(200).json({
@@ -44,7 +46,8 @@ class DynamicController<T extends Document> {
         }
     }
 
-    store = async (req: Request, res: Response): Promise<Response> => {
+    public store = async (req: Request, res: Response): Promise<Response> =>
+    {
         try {
             const createdData: T | null = await this._model.create(req.body);
             if (!createdData) { throw new Error('failed to store data') }
@@ -62,7 +65,8 @@ class DynamicController<T extends Document> {
         }
     }
 
-    update = async (req: Request, res: Response): Promise<Response> => {
+    public update = async (req: Request, res: Response): Promise<Response> =>
+    {
         try {
             const updatedData: T | null = await this._model.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true });
             if (!updatedData) { throw new Error('failed to update data') }
@@ -80,7 +84,8 @@ class DynamicController<T extends Document> {
         }
     }
 
-    delete = async (req: Request, res: Response): Promise<Response> => {
+    public delete = async (req: Request, res: Response): Promise<Response> =>
+    {
         try {
             const deletedData: T | null = await this._model.findOneAndDelete({ _id: req.params.id });
             if (!deletedData) { throw new Error('failed to delete data') };
@@ -95,6 +100,17 @@ class DynamicController<T extends Document> {
                 message: errMessage,
             });
         }
+    }
+
+    public join = async (req: Request): Promise<void> =>
+    {
+        const { join } = req.query;
+        if (!join) {
+            return;
+        }
+
+        const output = [];
+        
     }
 }
 
