@@ -11,6 +11,7 @@ class DynamicController<T extends Document> {
     public index = async (req: Request, res: Response): Promise<Response> =>
     {
         try {
+            const test = this.join(req);
             const data: any = await this._model.find();
             return res.status(200).json({
                 status: true,
@@ -102,15 +103,25 @@ class DynamicController<T extends Document> {
         }
     }
 
-    public join = async (req: Request): Promise<void> =>
+    public join = async (req: Request): Promise<{path: string; select: string}[]> =>
     {
         const { join } = req.query;
         if (!join) {
-            return;
+            return [];
         }
+        console.log(join);
 
-        const output = [];
-        
+        let output: {path: string; select: string}[] = [];
+        const joins: string[] = join.toString().split('|');
+        joins.forEach(j => {
+            const result: string[] = j.split(':');
+            output.push({
+                path: result[0],
+                select: result[1],
+            });
+        });
+
+        return output;
     }
 }
 
