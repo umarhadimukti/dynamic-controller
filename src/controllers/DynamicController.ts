@@ -117,7 +117,7 @@ class DynamicController<T extends Document> {
             const result: string[] = j.split(':');
             output.push({
                 path: result[0],
-                select: result[1],
+                select: result[1]
             });
         });
 

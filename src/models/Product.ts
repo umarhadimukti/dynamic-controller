@@ -43,6 +43,12 @@ const productSchema = new Schema<IProductDocument>(
     }
 );
 
+productSchema.virtual('category', {
+    ref: 'Category',
+    localField: 'categoryId',
+    foreignField: '_id',
+});
+
 const Product = model<IProductDocument>('Product', productSchema);
 
 export default Product;
