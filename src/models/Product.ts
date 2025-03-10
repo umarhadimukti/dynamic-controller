@@ -47,6 +47,7 @@ productSchema.virtual('category', {
     ref: 'Category',
     localField: 'categoryId',
     foreignField: '_id',
+    justOne: true,
 });
 
 const Product = model<IProductDocument>('Product', productSchema);
