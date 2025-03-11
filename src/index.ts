@@ -1,4 +1,4 @@
-import express, { Express, Response, Request } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import connectDB from './db/connection';
 import LoadModels from './models/LoadModels';
