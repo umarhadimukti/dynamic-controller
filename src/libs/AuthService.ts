@@ -2,8 +2,6 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = process.env.SECRET_KEY as string || '';
-
 dotenv.config();
 
 export default class AuthService
