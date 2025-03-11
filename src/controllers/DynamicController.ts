@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { Model, Document } from 'mongoose';
 
-class DynamicController<T extends Document> {
+class DynamicController<T extends Document>
+{
     private _model: Model<T>;
 
     constructor(model: Model<T>) {

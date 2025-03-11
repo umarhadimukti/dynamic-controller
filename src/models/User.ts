@@ -13,9 +13,7 @@ interface IUser extends Document
     password: string,
 }
 
-type IUserSchema = IUser & Document;
-
-const UserSchema = new Schema<IUserSchema>(
+const UserSchema = new Schema<IUser>(
     {	
         roleId: {
             type: Schema.Types.ObjectId,
@@ -64,6 +62,7 @@ const UserSchema = new Schema<IUserSchema>(
  */
 UserSchema.virtual('fullName').get(function() { return `${this.firstName} ${this.lastName}`; });
 
-const User = model<IUserSchema>('User', UserSchema);
+const User = model<IUser>('User', UserSchema);
 
 export default User;
+export { IUser };

@@ -1,7 +1,6 @@
 import dynamicController from '../controllers/DynamicController';
 import express, { Router, Request, Response } from 'express';
-import { Document, Model } from 'mongoose';
-
+import { Model } from 'mongoose';
 
 const dynamicRoute = (model: Model<any>): Router => {
     const router: Router = express.Router();

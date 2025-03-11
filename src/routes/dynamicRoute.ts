@@ -2,7 +2,10 @@ import dynamicController from '../controllers/DynamicController';
 import express, { Router, Request, Response } from 'express';
 import { Model } from 'mongoose';
 
-// this file is used to load models
+/**
+ * 
+ * @file - this file used for load models
+ */
 
 const dynamicRoute = (model: Model<any>): Router => {
     const router: Router = express.Router();
