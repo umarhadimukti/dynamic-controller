@@ -1,11 +1,17 @@
-import User from "../../models/User";
 import { Request, Response } from 'express';
 import { Model } from "mongoose";
 import { IUser } from "../../models/User";
+import AuthService from "../../libs/AuthService";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default class AuthController
 {
     protected _model: Model<IUser>;
+    
+    private JWT_ACCESS_TOKEN_SECRET: string = process.env.JWT_ACCESS_TOKEN_SECRET || '';
+    private JWT_REFRESH_TOKEN_SECRET: string = process.env.JWT_REFRESH_TOKEN_SECRET || '';
 
     constructor(model: Model<IUser>) {
         this._model = model;
@@ -34,14 +40,36 @@ export default class AuthController
     {
         try {
             const payload = req.body;
+            const authService = new AuthService;
 
-            const newUser = await this._model.create(payload);
+            const hashedPassword = await authService.hashPassword(payload.password);
+
+            const newUser = await this._model.create({
+                firstName: payload.firstName,
+                lastName: payload.lastName,
+                email: payload.email,
+                password: hashedPassword,
+                roleId: payload.roleId,
+            });
+
+            const user: object = newUser.toObject();
+
+            // create new token (JWT)
+            const accessToken = authService.generateToken(user, this.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+            const refreshToken = authService.generateToken(user, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
 
             return res.status(201).json({
                 status: true,
                 message: 'user created successfully.',
                 length: 0,
-                data: newUser,
+                data: {
+                    _id: newUser._id,
+                    firstName: newUser.firstName,
+                    lastName: newUser.lastName,
+                    email: newUser.email,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                },
             });
         } catch (err) {
             return res.status(500).json({
