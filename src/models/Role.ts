@@ -3,39 +3,24 @@ import moment from 'moment';
 
 const { Schema, model } = mongoose;
 
-interface IUser extends Document
+interface IRole extends Document
 {
     _id: mongoose.Types.ObjectId,
-    roleId: mongoose.Types.ObjectId,
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
+    name: string,
+    description: string,
 }
 
-type IUserSchema = IUser & Document;
+type IRoleSchema = IRole & Document;
 
-const UserSchema = new Schema<IUserSchema>(
+const RoleSchema = new Schema<IRoleSchema>(
     {	
-        roleId: {
-            type: Schema.Types.ObjectId,
-            required: true,
-        },
-        firstName: {
+        name:{
             type: String,
-            required: true,
-        },
-        lastName: {
+            required: true
+        },		
+        description: {
             type: String,
-            required: false,
-        },
-        email: {
-            type: String,
-            required: true,
-        },
-        password: {
-            type: String,
-            required: true,
+            required: true
         },
 	},
     {
@@ -59,11 +44,6 @@ const UserSchema = new Schema<IUserSchema>(
     }
 );
 
-/**
- * @return - mengambil fullName dari gabungan first dan last
- */
-UserSchema.virtual('fullName').get(function() { return `${this.firstName} ${this.lastName}`; });
+const Role = model<IRoleSchema>('Role', RoleSchema);
 
-const User = model<IUserSchema>('User', UserSchema);
-
-export default User;
+export default Role;

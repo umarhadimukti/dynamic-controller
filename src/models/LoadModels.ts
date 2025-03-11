@@ -12,4 +12,7 @@ app.use('/products', dynamicRoute(Product));
 import User from "./User";
 app.use('/users', dynamicRoute(User));
 
+import Role from "./Role";
+app.use('/roles', dynamicRoute(Role));
+
 export default app;
