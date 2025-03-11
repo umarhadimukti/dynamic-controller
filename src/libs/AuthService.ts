@@ -30,9 +30,32 @@ export default class AuthService
         return await bcrypt.compare(password, hashedPassword);
     }
 
-    public generateToken = (payload: object, secretKey: jwt.Secret, options?: jwt.SignOptions) =>
+    /**
+     * 
+     * @param payload - payload data user
+     * @param secretKey - secretKey
+     * @param options - options untuk expiresIn
+     * @returns 
+     */
+    public generateToken = (payload: object, secretKey: jwt.Secret, options?: jwt.SignOptions): string =>
     {
         const token = jwt.sign(payload, secretKey, options);
         return token;
+    }
+
+    /**
+     * 
+     * @param token - string token
+     * @param secretKey - secretKey
+     * @returns - return hasil verifikasi
+     */
+    public verifyToken = (token: string, secretKey: jwt.Secret): string | jwt.JwtPayload | null =>
+    {
+        try {
+            return jwt.verify(token, secretKey);
+        } catch (err) {
+            console.error(`token verification failed: ${err instanceof Error ? err.message : 'unknown error'}`);
+            return null;
+        }
     }
 }
