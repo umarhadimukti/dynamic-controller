@@ -7,15 +7,10 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug Typescript",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/src/system/controllers/AuthController.ts",
-            "outFiles": [
-                "${workspaceFolder}/dist/**/*.js"
-            ],
-            "preLaunchTask": "tsc: build - tsconfig.json",
+            "name": "Debug TypeScript (ts-node)",
+            "runtimeArgs": ["-r", "ts-node/register"],
+            "args": ["${workspaceFolder}/src/index.ts"],
+            "sourceMaps": true,
         }
     ]
 }

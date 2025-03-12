@@ -43,6 +43,7 @@ class AuthController {
                 roleId: payload.roleId,
             });
             const user = newUser.toObject();
+            console.log('testing');
             // create new token (JWT)
             const accessToken = authService.generateToken(user, this.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
             const refreshToken = authService.generateToken(user, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
