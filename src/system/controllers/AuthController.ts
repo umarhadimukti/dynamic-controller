@@ -42,6 +42,11 @@ export default class AuthController
             const payload = req.body;
             const authService = new AuthService;
 
+            const isExistsUser = await this._model.findOne({ email: payload.email });
+            if (isExistsUser) {
+                throw new Error('email already exists.');
+            }
+
             const hashedPassword = await authService.hashPassword(payload.password);
 
             const newUser = await this._model.create({
