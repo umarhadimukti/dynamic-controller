@@ -5,6 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const DynamicController_1 = __importDefault(require("../controllers/DynamicController"));
 const express_1 = __importDefault(require("express"));
+/**
+ *
+ * @file - this file used for load models
+ */
 const dynamicRoute = (model) => {
     const router = express_1.default.Router();
     const controller = new DynamicController_1.default(model);
@@ -26,4 +30,4 @@ const dynamicRoute = (model) => {
     return router;
 };
 exports.default = dynamicRoute;
-//# sourceMappingURL=api.js.map
+//# sourceMappingURL=dynamicRoute.js.map

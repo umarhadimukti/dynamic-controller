@@ -6,11 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const moment_1 = __importDefault(require("moment"));
 const { Schema, model } = mongoose_1.default;
-;
-const categorySchema = new Schema({
-    name: { type: String, required: true, },
-    status: { type: Boolean, default: true, },
-    description: { type: String, required: false, },
+const RoleSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
 }, {
     timestamps: true,
     toJSON: {
@@ -30,6 +34,6 @@ const categorySchema = new Schema({
         },
     },
 });
-const Category = model('Category', categorySchema);
-exports.default = Category;
-//# sourceMappingURL=Category.js.map
+const Role = model('Role', RoleSchema);
+exports.default = Role;
+//# sourceMappingURL=Role.js.map

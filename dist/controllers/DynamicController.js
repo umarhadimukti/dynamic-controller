@@ -7,7 +7,8 @@ class DynamicController {
     }
     index = async (req, res) => {
         try {
-            const data = await this._model.find();
+            const join = await this.join(req);
+            const data = await this._model.find().populate(join);
             return res.status(200).json({
                 status: true,
                 message: data.length > 0 ? `data found` : `data empty`,
@@ -101,5 +102,22 @@ class DynamicController {
             });
         }
     };
+    join = async (req) => {
+        const { join } = req.query;
+        if (!join) {
+            return [];
+        }
+        let output = [];
+        const joins = join.toString().split('|');
+        joins.forEach(j => {
+            const result = j.split(':');
+            output.push({
+                path: result[0],
+                select: result[1]
+            });
+        });
+        return output;
+    };
 }
 exports.default = DynamicController;
+//# sourceMappingURL=DynamicController.js.map

@@ -6,11 +6,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const moment_1 = __importDefault(require("moment"));
 const { Schema, model } = mongoose_1.default;
-;
-const categorySchema = new Schema({
-    name: { type: String, required: true, },
-    status: { type: Boolean, default: true, },
-    description: { type: String, required: false, },
+const UserSchema = new Schema({
+    roleId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+    },
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+        required: false,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
 }, {
     timestamps: true,
     toJSON: {
@@ -30,6 +46,10 @@ const categorySchema = new Schema({
         },
     },
 });
-const Category = model('Category', categorySchema);
-exports.default = Category;
-//# sourceMappingURL=Category.js.map
+/**
+ * @return - mengambil fullName dari gabungan first dan last
+ */
+UserSchema.virtual('fullName').get(function () { return `${this.firstName} ${this.lastName}`; });
+const User = model('User', UserSchema);
+exports.default = User;
+//# sourceMappingURL=User.js.map

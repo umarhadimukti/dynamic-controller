@@ -4,14 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const express_validator_1 = require("express-validator");
-const runValidation_1 = __importDefault(require("../libs/runValidation"));
+const InputValidation_1 = __importDefault(require("../libs/InputValidation"));
 const app = (0, express_1.default)();
-app.post('/categories', (0, express_validator_1.checkSchema)({
+app.post('/categories', ...InputValidation_1.default.validate({
     name: { notEmpty: true, errorMessage: 'nama kategori harus diisi.' },
-    status: { notEmpty: true, errorMessage: 'status harus diisi.' },
-}), runValidation_1.default);
-app.put('categories/:id', (0, express_validator_1.checkSchema)({
+    status: { notEmpty: true, errorMessage: 'status harus diisi.' }
+}));
+app.put('/categories/:id', ...InputValidation_1.default.validate({
     id: {
         notEmpty: true,
         errorMessage: 'id kategori harus di masukkan.',
@@ -30,7 +29,17 @@ app.put('categories/:id', (0, express_validator_1.checkSchema)({
         notEmpty: true,
         in: 'body',
         errorMessage: 'status harus diisi.',
-        isBoolean: true,
+        isBoolean: {
+            errorMessage: 'tipe data status harus boolean.',
+        },
     },
-}), runValidation_1.default);
+}));
+app.delete('/categories/:id', ...InputValidation_1.default.validate({
+    id: {
+        notEmpty: true,
+        in: 'params',
+        errorMessage: 'id harus dimasukkan',
+    },
+}));
 exports.default = app;
+//# sourceMappingURL=Category.js.map

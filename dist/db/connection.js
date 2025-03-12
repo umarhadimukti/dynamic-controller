@@ -18,3 +18,4 @@ const connectDB = async () => {
     }
 };
 exports.default = connectDB;
+//# sourceMappingURL=connection.js.map
