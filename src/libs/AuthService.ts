@@ -52,7 +52,7 @@ export default class AuthService
         try {
             return jwt.verify(token, secretKey);
         } catch (err) {
-            console.error(`token verification failed: ${err instanceof Error ? err.message : 'unknown error'}`);
+            console.error(`token verification failed: ${err instanceof Error ? err.message : err}`);
             return null;
         }
     }
