@@ -20,13 +20,18 @@ export default class AuthController
     public async login (req: Request, res: Response): Promise<Response>
     {
         try {
-            const payload = req.body;
-            console.log(payload);
+            const { email: emailPayload, password: passwordPayload } = req.body;
+            const authService = new AuthService;
+
+            const existsUser = await this._model.findOne({ email: emailPayload });
+            if (!existsUser) {
+                throw new Error('user doesn\'t exists.');
+            }
+            
 
             return res.status(201).json({
                 status: true,
                 message: 'login success.',
-                length: 0,
             })
         } catch (err) {
             return res.status(500).json({

@@ -3,7 +3,6 @@ import User from "../../models/User";
 import AuthController from "../controllers/AuthController";
 import ModuleController from "../controllers/ModuleController";
 import express, { Request, Response, Express } from "express";
-import { Model } from "mongoose";
 
 const app: Express = express();
 const moduleController: ModuleController = new ModuleController;

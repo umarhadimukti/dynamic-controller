@@ -15,12 +15,15 @@ class AuthController {
     }
     async login(req, res) {
         try {
-            const payload = req.body;
-            console.log(payload);
+            const { email: emailPayload, password: passwordPayload } = req.body;
+            const authService = new AuthService_1.default;
+            const existsUser = await this._model.findOne({ email: emailPayload });
+            if (!existsUser) {
+                throw new Error('user doesn\'t exists.');
+            }
             return res.status(201).json({
                 status: true,
                 message: 'login success.',
-                length: 0,
             });
         }
         catch (err) {
