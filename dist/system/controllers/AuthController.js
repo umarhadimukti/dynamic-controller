@@ -30,9 +30,20 @@ class AuthController {
                     message: 'invalid email or password.',
                 });
             }
+            const user = existsUser.toObject();
+            const accessToken = authService.generateToken(user, this.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
+            const refreshToken = authService.generateToken(user, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
             return res.status(201).json({
                 status: true,
                 message: 'login success.',
+                data: {
+                    _id: existsUser._id,
+                    firstName: existsUser.firstName,
+                    lastName: existsUser.lastName,
+                    email: existsUser.email,
+                },
+                accessToken,
+                refreshToken,
             });
         }
         catch (err) {
