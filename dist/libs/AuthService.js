@@ -43,13 +43,12 @@ class AuthService {
      * @param secretKey - secretKey
      * @returns - return hasil verifikasi
      */
-    verifyToken = (token, secretKey) => {
+    verifyToken = async (token, secretKey) => {
         try {
             return jsonwebtoken_1.default.verify(token, secretKey);
         }
         catch (err) {
-            console.error(`token verification failed: ${err instanceof Error ? err.message : err}`);
-            return null;
+            return `test: ${err}`;
         }
     };
 }

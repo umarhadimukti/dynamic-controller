@@ -19,5 +19,8 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     authController.login(req, res);
 });
+app.post('/refresh-token/:token', (req, res) => {
+    authController.refreshToken(req, res);
+});
 exports.default = app;
 //# sourceMappingURL=system.js.map
