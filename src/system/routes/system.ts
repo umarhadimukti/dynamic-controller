@@ -20,4 +20,8 @@ app.post('/login', (req: Request, res: Response): void => {
     authController.login(req, res);
 })
 
+app.post('/refresh-token/:token', (req: Request, res: Response): void => {
+    authController.refreshToken(req, res);
+})
+
 export default app;

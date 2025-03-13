@@ -47,13 +47,12 @@ export default class AuthService
      * @param secretKey - secretKey
      * @returns - return hasil verifikasi
      */
-    public verifyToken = (token: string, secretKey: jwt.Secret): string | jwt.JwtPayload | null =>
+    public verifyToken = async (token: string, secretKey: jwt.Secret): Promise<string | jwt.JwtPayload | unknown> =>
     {
         try {
             return jwt.verify(token, secretKey);
         } catch (err) {
-            console.error(`token verification failed: ${err instanceof Error ? err.message : err}`);
-            return null;
+            return `test: ${err}`
         }
     }
 }

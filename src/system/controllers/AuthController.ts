@@ -111,6 +111,44 @@ export default class AuthController
         }
     }
 
-    
+    public async refreshToken (req: Request, res: Response): Promise<Response>
+    {
+        try {
+            const { token } = req.params;
+            const authService = new AuthService;
+
+            if (!token) {
+                res.status(400).json({
+                    status: false,
+                    message: 'token required.',
+                });
+            }
+
+            // verifikasi token
+            const verifiedToken = await authService.verifyToken(token, this.JWT_REFRESH_TOKEN_SECRET);
+            if (!verifiedToken || typeof verifiedToken !== 'object') {
+                return res.status(401).json({
+                    status: false,
+                    message: 'invalid or expired refresh token.',
+                });
+            }
+
+            const accessToken = authService.generateToken(verifiedToken, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+            const refreshToken = authService.generateToken(verifiedToken, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+
+            return res.status(200).json({
+                status: true,
+                message: 'token successfully refreshed.',
+                accessToken,
+                refreshToken,
+            });
+
+        } catch (err) {
+            return res.status(500).json({
+                status: false,
+                message: `${err instanceof Error ? err.message : 'unknown error'}`,
+            });
+        }
+    }
 
 }
