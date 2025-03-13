@@ -25,9 +25,18 @@ export default class AuthController
 
             const existsUser = await this._model.findOne({ email: emailPayload });
             if (!existsUser) {
-                throw new Error('user doesn\'t exists.');
+                return res.status(401).json({
+                    status: false,
+                    message: 'user doesn\'t exists.',
+                });
             }
             
+            if (!await authService.comparePassword(passwordPayload, existsUser.password)) {
+                return res.status(401).json({
+                    status: false,
+                    message: 'invalid email or password.',
+                });
+            }
 
             return res.status(201).json({
                 status: true,
