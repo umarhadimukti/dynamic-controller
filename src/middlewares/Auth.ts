@@ -45,4 +45,29 @@ app.post(
     }),
 );
 
+app.post(
+    '/login',
+    ...InputValidation.validate({
+        email: {
+            in: 'body',
+            isEmail: {
+                errorMessage: 'must be a valid email address.',
+            },
+            notEmpty: true,
+            errorMessage: 'email is required.',
+        },
+        password: {
+            in: 'body',
+            isLength: {
+                options: {
+                    min: 6,
+                },
+                errorMessage: 'password at least 6 characters',
+            },
+            notEmpty: true,
+            errorMessage: 'password is required.',
+        }
+    }),
+);
+
 export default app;

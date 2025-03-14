@@ -11,7 +11,7 @@ class InputValidation {
                     if (!result.isEmpty()) {
                         res.status(400).json({
                             status: false,
-                            message: 'input error',
+                            message: 'bad request: input not valid.',
                             error: result.array(),
                         });
                         return;
