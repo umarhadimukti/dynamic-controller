@@ -112,8 +112,11 @@ class AuthController {
                     message: 'invalid or expired refresh token.',
                 });
             }
-            const accessToken = authService.generateToken(verifiedToken, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
-            const refreshToken = authService.generateToken(verifiedToken, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+            // ekstrak data user (hapus iat, exp)
+            const { iat, exp, ...userData } = verifiedToken;
+            // generate token baru
+            const accessToken = authService.generateToken(userData, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+            const refreshToken = authService.generateToken(userData, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
             return res.status(200).json({
                 status: true,
                 message: 'token successfully refreshed.',
