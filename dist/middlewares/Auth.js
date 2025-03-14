@@ -51,7 +51,18 @@ app.post('/login', ...InputValidation_1.default.validate({
             errorMessage: 'must be a valid email address.',
         },
         notEmpty: true,
-        errorMessage: 'email required.',
+        errorMessage: 'email is required.',
+    },
+    password: {
+        in: 'body',
+        isLength: {
+            options: {
+                min: 6,
+            },
+            errorMessage: 'password at least 6 characters',
+        },
+        notEmpty: true,
+        errorMessage: 'password is required.',
     }
 }));
 exports.default = app;
