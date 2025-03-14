@@ -9,37 +9,37 @@ app.post(
         categoryId: {
             notEmpty: true,
             in: 'body',
-            errorMessage: 'kategori id harus diisi',
+            errorMessage: 'category id required.',
         },
         name: {
             notEmpty: true,
             in: 'body',
-            errorMessage: 'nama produk harus diisi',
+            errorMessage: 'product name required.',
         },
         status: {
             notEmpty: true,
             in: 'body',
             default: true,
-            errorMessage: 'status harus diisi',
+            errorMessage: 'status required.',
             isBoolean: {
-                errorMessage: 'status harus bernilai (benar/salah)',
+                errorMessage: 'status must be boolean.',
             },
         },
         price: {
             notEmpty: true,
             in: 'body',
-            errorMessage: 'harga harus diisi',
+            errorMessage: 'price required.',
             isNumeric: {
-                errorMessage: 'harga harus numerik',
+                errorMessage: 'price must be numeric.',
             },
         },
         description: {
             notEmpty: true,
             in: 'body',
             isString: {
-                errorMessage: 'deskripsi harus karakter',
+                errorMessage: 'description must be string.',
             },
-            errorMessage: 'deskripsi harus diisi',
+            errorMessage: 'description required.',
         },
     })
 );
@@ -51,21 +51,21 @@ app.put(
             notEmpty: true,
             in: 'params',
             isEmpty: {
-                errorMessage: 'produk id harus diisi',
+                errorMessage: 'product id required.',
             },
         },
         categoryId: {
             notEmpty: true,
             in: 'params',
             isEmpty: {
-                errorMessage: 'kategori id harus diisi',
+                errorMessage: 'category id required.',
             },
         },
         name: {
             notEmpty: true,
             in: 'body',
             isEmpty: {
-                errorMessage: 'nama produk harus diisi',
+                errorMessage: 'product name required.',
             },
         },
         status: {
@@ -73,25 +73,25 @@ app.put(
             in: 'body',
             default: true,
             isEmpty: {
-                errorMessage: 'status harus diisi',
+                errorMessage: 'status required.',
             },
             isBoolean: {
-                errorMessage: 'status harus bernilai (benar/salah)',
+                errorMessage: 'status must be boolean.',
             },
         },
         price: {
             notEmpty: true,
             in: 'body',
-            errorMessage: 'harga harus diisi',
+            errorMessage: 'price required.',
             isNumeric: {
-                errorMessage: 'harga harus numerik',
+                errorMessage: 'price must be numeric.',
             },
         },
         description: {
             notEmpty: false,
             in: 'body',
             isString: {
-                errorMessage: 'deskripsi harus karakter'
+                errorMessage: 'description must be string.'
             },
         },
     })
@@ -103,7 +103,7 @@ app.delete(
             notEmpty: true,
             in: 'params',
             isEmpty: {
-                errorMessage: 'produk id harus diisi',
+                errorMessage: 'product id required.',
             },
         },
     })
