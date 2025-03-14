@@ -6,8 +6,8 @@ const app: Express = express();
 app.post(
     '/categories',
     ...InputValidation.validate({
-        name: { notEmpty: true, errorMessage: 'nama kategori harus diisi.' },
-        status: { notEmpty: true, errorMessage: 'status harus diisi.' }
+        name: { notEmpty: true, errorMessage: 'category name required.' },
+        status: { notEmpty: true, errorMessage: 'status required.' }
     })
 );
 app.put(
@@ -15,24 +15,24 @@ app.put(
     ...InputValidation.validate({
         id: {
             notEmpty: true,
-            errorMessage: 'id kategori harus di masukkan.',
+            errorMessage: 'category id required.',
             in: 'params',
         },
         name: {
             notEmpty: true,
-            errorMessage: 'nama kategori harus diisi.',
+            errorMessage: 'category name required.',
             in: 'body',
             isLength: {
                 options: { min: 3 },
-                errorMessage: 'minimal 3 karakter.',
+                errorMessage: 'category name at least 3 characters.',
             }
         },
         status: {
             notEmpty: true,
             in: 'body',
-            errorMessage: 'status harus diisi.',
+            errorMessage: 'status required.',
             isBoolean: {
-                errorMessage: 'tipe data status harus boolean.',
+                errorMessage: 'status must be boolean.',
             },
         },
     })
@@ -43,7 +43,7 @@ app.delete(
         id: {
             notEmpty: true,
             in: 'params',
-            errorMessage: 'id harus dimasukkan',
+            errorMessage: 'category id required',
         },
     })
 );

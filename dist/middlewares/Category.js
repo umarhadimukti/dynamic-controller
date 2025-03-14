@@ -7,30 +7,30 @@ const express_1 = __importDefault(require("express"));
 const InputValidation_1 = __importDefault(require("../libs/InputValidation"));
 const app = (0, express_1.default)();
 app.post('/categories', ...InputValidation_1.default.validate({
-    name: { notEmpty: true, errorMessage: 'nama kategori harus diisi.' },
-    status: { notEmpty: true, errorMessage: 'status harus diisi.' }
+    name: { notEmpty: true, errorMessage: 'category name required.' },
+    status: { notEmpty: true, errorMessage: 'status required.' }
 }));
 app.put('/categories/:id', ...InputValidation_1.default.validate({
     id: {
         notEmpty: true,
-        errorMessage: 'id kategori harus di masukkan.',
+        errorMessage: 'category id required.',
         in: 'params',
     },
     name: {
         notEmpty: true,
-        errorMessage: 'nama kategori harus diisi.',
+        errorMessage: 'category name required.',
         in: 'body',
         isLength: {
             options: { min: 3 },
-            errorMessage: 'minimal 3 karakter.',
+            errorMessage: 'category name at least 3 characters.',
         }
     },
     status: {
         notEmpty: true,
         in: 'body',
-        errorMessage: 'status harus diisi.',
+        errorMessage: 'status required.',
         isBoolean: {
-            errorMessage: 'tipe data status harus boolean.',
+            errorMessage: 'status must be boolean.',
         },
     },
 }));
@@ -38,7 +38,7 @@ app.delete('/categories/:id', ...InputValidation_1.default.validate({
     id: {
         notEmpty: true,
         in: 'params',
-        errorMessage: 'id harus dimasukkan',
+        errorMessage: 'category id required',
     },
 }));
 exports.default = app;
