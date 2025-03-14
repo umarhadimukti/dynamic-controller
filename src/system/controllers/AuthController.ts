@@ -3,6 +3,7 @@ import { Model } from "mongoose";
 import { IUser } from "../../models/User";
 import AuthService from "../../libs/AuthService";
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -133,8 +134,12 @@ export default class AuthController
                 });
             }
 
-            const accessToken = authService.generateToken(verifiedToken, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
-            const refreshToken = authService.generateToken(verifiedToken, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+            // ekstrak data user (hapus iat, exp)
+            const { iat, exp, ...userData } = verifiedToken as jwt.JwtPayload;
+
+            // generate token baru
+            const accessToken = authService.generateToken(userData, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+            const refreshToken = authService.generateToken(userData, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
             return res.status(200).json({
                 status: true,
