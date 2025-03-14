@@ -70,4 +70,15 @@ app.post(
     }),
 );
 
+app.post(
+    '/refresh-token/:token',
+    ...InputValidation.validate({
+        token: {
+            in: 'params',
+            notEmpty: true,
+            errorMessage: 'token is required.',
+        },
+    }),
+);
+
 export default app;
