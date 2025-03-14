@@ -65,5 +65,12 @@ app.post('/login', ...InputValidation_1.default.validate({
         errorMessage: 'password is required.',
     }
 }));
+app.post('/refresh-token/:token', ...InputValidation_1.default.validate({
+    token: {
+        in: 'params',
+        notEmpty: true,
+        errorMessage: 'token is required.',
+    },
+}));
 exports.default = app;
 //# sourceMappingURL=Auth.js.map
