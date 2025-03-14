@@ -75,7 +75,7 @@ export default class AuthController
                 throw new Error('email already exists.');
             }
 
-            const hashedPassword = await authService.hashPassword(payload.password);
+            const hashedPassword: string = await authService.hashPassword(payload.password);
 
             const newUser = await this._model.create({
                 firstName: payload.firstName,
@@ -88,8 +88,8 @@ export default class AuthController
             const user: object = newUser.toObject();
 
             // create new token (JWT)
-            const accessToken = authService.generateToken(user, this.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-            const refreshToken = authService.generateToken(user, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+            const accessToken: string = authService.generateToken(user, this.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+            const refreshToken: string = authService.generateToken(user, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
 
             return res.status(201).json({
                 status: true,
@@ -126,7 +126,7 @@ export default class AuthController
             }
 
             // verifikasi token
-            const verifiedToken = await authService.verifyToken(token, this.JWT_REFRESH_TOKEN_SECRET);
+            const verifiedToken: jwt.JwtPayload | unknown = await authService.verifyToken(token, this.JWT_REFRESH_TOKEN_SECRET);
             if (!verifiedToken || typeof verifiedToken !== 'object') {
                 return res.status(401).json({
                     status: false,
