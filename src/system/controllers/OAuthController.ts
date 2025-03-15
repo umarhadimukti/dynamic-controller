@@ -23,11 +23,19 @@ class OAuthController
         include_granted_scopes: true
     });
 
+    /**
+     * 
+     * @param res - redirect user ke url yang telah di generate 
+     */
     public googleLogin (req: Request, res: Response)
     {
         res.redirect(this.url);
     }
 
+    /**
+     * 
+     * @returns - memproses user setelah berhasil autentikasi
+     */
     public async callbackLogin (req: Request, res: Response)
     {
         const { code } = req.query; // ex. GET http:xxxx?code=12341234
@@ -42,7 +50,7 @@ class OAuthController
         const { tokens } = await this.oauth2Client.getToken(code as string); // get token
         this.oauth2Client.setCredentials(tokens);
 
-        
+
     }
 }
 
