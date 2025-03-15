@@ -28,8 +28,20 @@ class OAuthController
         res.redirect(this.url);
     }
 
-    public callbackLogin (req: Request, res: Response)
+    public async callbackLogin (req: Request, res: Response)
     {
+        const { code } = req.query; // ex. GET http:xxxx?code=12341234
+
+        if (!code) {
+            return res.status(400).json({
+                status: false,
+                message: 'code is required.',
+            });
+        }
+
+        const { tokens } = await this.oauth2Client.getToken(code as string); // get token
+        this.oauth2Client.setCredentials(tokens);
+
         
     }
 }
