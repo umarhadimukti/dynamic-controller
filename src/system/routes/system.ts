@@ -26,11 +26,11 @@ app.post('/refresh-token/:token', (req: Request, res: Response): void => {
     authController.refreshToken(req, res);
 });
 
-app.get('/auth/login', (req: Request, res: Response): void => {
+app.get('/auth/google', (req: Request, res: Response): void => {
     oAuthController.googleLogin(req, res);
 });
 
-app.get('/auth/login/callback', (req: Request, res: Response): void => {
+app.get('/auth/google/callback', (req: Request, res: Response): void => {
     oAuthController.callbackLogin(req, res);
 });
 
