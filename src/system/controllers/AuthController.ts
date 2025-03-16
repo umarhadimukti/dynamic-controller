@@ -100,9 +100,9 @@ export default class AuthController
                     firstName: newUser.firstName,
                     lastName: newUser.lastName,
                     email: newUser.email,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
                 },
+                accessToken: accessToken,
+                refreshToken: refreshToken,
             });
         } catch (err) {
             return res.status(500).json({
