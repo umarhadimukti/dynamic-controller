@@ -40,7 +40,7 @@ class OAuthController
 
     /**
      * 
-     * @returns - memproses user setelah berhasil autentikasi
+     * @returns - memproses data user, setelah mendapatkan akses kode dari third-party (googleapis)
      */
     public async callbackLogin (req: Request, res: Response)
     {

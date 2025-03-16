@@ -31,7 +31,7 @@ class OAuthController {
     }
     /**
      *
-     * @returns - memproses user setelah berhasil autentikasi
+     * @returns - memproses data user, setelah mendapatkan akses kode dari third-party (googleapis)
      */
     async callbackLogin(req, res) {
         try {
