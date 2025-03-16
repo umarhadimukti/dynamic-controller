@@ -24,10 +24,10 @@ app.post('/login', (req, res) => {
 app.post('/refresh-token/:token', (req, res) => {
     authController.refreshToken(req, res);
 });
-app.get('/auth/login', (req, res) => {
+app.get('/auth/google', (req, res) => {
     oAuthController.googleLogin(req, res);
 });
-app.get('/auth/login/callback', (req, res) => {
+app.get('/auth/google/callback', (req, res) => {
     oAuthController.callbackLogin(req, res);
 });
 exports.default = app;
