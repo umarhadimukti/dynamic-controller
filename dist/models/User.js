@@ -26,8 +26,20 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: true,
+        default: null,
+        validate: {
+            validator: function (val) {
+                if (!this.isOAuth && !val)
+                    return false;
+                return true;
+            },
+            message: 'password is required.',
+        }
     },
+    isOAuth: {
+        type: Boolean,
+        default: false,
+    }
 }, {
     timestamps: true,
     toJSON: {

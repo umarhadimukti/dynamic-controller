@@ -35,8 +35,7 @@ app.post('/register', ...InputValidation_1.default.validate({
             },
             errorMessage: 'password at least 6 characters.',
         },
-        notEmpty: true,
-        errorMessage: 'password required.',
+        notEmpty: false,
     },
     roleId: {
         in: 'body',
