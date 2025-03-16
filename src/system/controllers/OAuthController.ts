@@ -80,6 +80,7 @@ class OAuthController
                     email: data.email,
                     password: '',
                     roleId: userRole._id,
+                    isOAuth: true,
                 });
             }
 

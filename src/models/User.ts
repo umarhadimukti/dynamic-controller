@@ -11,6 +11,7 @@ interface IUser extends Document
     lastName: string,
     email: string,
     password: string,
+    isOAuth: boolean,
 }
 
 const UserSchema = new Schema<IUser>(
@@ -34,8 +35,19 @@ const UserSchema = new Schema<IUser>(
         },
         password: {
             type: String,
-            required: true,
+            default: null,
+            validate: {
+                validator: function (val: string) {
+                    if (!this.isOAuth && !val) return false;
+                    return true;
+                },
+                message: 'password is required.',
+            }
         },
+        isOAuth: {
+            type: Boolean,
+            default: false,
+        }
 	},
     {
         timestamps: true,
