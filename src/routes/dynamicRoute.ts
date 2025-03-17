@@ -1,6 +1,7 @@
 import dynamicController from '../controllers/DynamicController';
 import express, { Router, Request, Response } from 'express';
 import { Model } from 'mongoose';
+import authMiddleware from '../middlewares/JwtAuth';
 
 /**
  * 
@@ -11,8 +12,8 @@ const dynamicRoute = (model: Model<any>): Router => {
     const router: Router = express.Router();
     const controller = new dynamicController(model);
 
-    router.get('/', (req: Request, res: Response) => {
-        controller.index(req, res)
+    router.get('/', authMiddleware, (req: Request, res: Response) => {
+        controller.index(req, res);
     });
     router.get('/:id', (req: Request, res: Response) => {
         controller.show(req, res)
