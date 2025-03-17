@@ -19,6 +19,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^22.13.1",
     "concurrently": "^9.1.2",
+    "console-ninja": "^1.0.0",
     "express": "^5.0.0",
     "express-validator": "^7.2.1",
     "mongoose": "^8.10.0",

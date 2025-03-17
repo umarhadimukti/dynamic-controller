@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import AuthService from "../libs/AuthService";
 
-interface ValidationRequest extends Request {
-    userData?: any,
+declare module "express" {
+    export interface Request {
+        userData?: any,
+    }
 }
 
 export default async function JwtAuth (req: Request, res: Response, next: NextFunction): Promise<void> {
-    const validationRequest = req as ValidationRequest;
-    const { authorization } = validationRequest.headers;
+    const { authorization } = req.headers;
 
     if (!authorization) {
         res.status(401).json({
@@ -18,15 +19,13 @@ export default async function JwtAuth (req: Request, res: Response, next: NextFu
     }
 
     const token: string = authorization.split(' ')[1];
+    console.log(token)
     const secretKey: string = process.env.JWT_REFRESH_TOKEN_SECRET as string;
     const authService = new AuthService;
 
     try {
         const jwtDecode = await authService.verifyToken(token, secretKey);
-        if (!jwtDecode) {
-            throw new Error('token not valid.')
-        }
-        validationRequest.userData = jwtDecode;
+        req.userData = jwtDecode;
     } catch (err) {
         res.status(401).json({
             status: false,
