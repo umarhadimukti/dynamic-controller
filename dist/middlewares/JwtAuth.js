@@ -6,8 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = JwtAuth;
 const AuthService_1 = __importDefault(require("../libs/AuthService"));
 async function JwtAuth(req, res, next) {
-    const validationRequest = req;
-    const { authorization } = validationRequest.headers;
+    const { authorization } = req.headers;
     if (!authorization) {
         res.status(401).json({
             status: false,
@@ -16,14 +15,11 @@ async function JwtAuth(req, res, next) {
         return;
     }
     const token = authorization.split(' ')[1];
-    const secretKey = process.env.JWT_REFRESH_TOKEN_SECRET;
+    const secretKey = process.env.JWT_ACCESS_TOKEN_SECRET;
     const authService = new AuthService_1.default;
     try {
         const jwtDecode = await authService.verifyToken(token, secretKey);
-        if (!jwtDecode) {
-            throw new Error('token not valid.');
-        }
-        validationRequest.userData = jwtDecode;
+        req.userData = jwtDecode;
     }
     catch (err) {
         res.status(401).json({

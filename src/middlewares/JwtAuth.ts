@@ -26,7 +26,6 @@ export default async function JwtAuth (req: Request, res: Response, next: NextFu
     try {
         const jwtDecode: unknown | JwtPayload = await authService.verifyToken(token, secretKey);
 
-        console.log(jwtDecode)
         req.userData = jwtDecode;
     } catch (err) {
         res.status(401).json({

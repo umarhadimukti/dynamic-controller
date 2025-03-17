@@ -8,8 +8,8 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 class AuthController {
     _model;
-    JWT_ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_TOKEN_SECRET || '';
-    JWT_REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_TOKEN_SECRET || '';
+    JWT_ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_TOKEN_SECRET;
+    JWT_REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_TOKEN_SECRET;
     constructor(model) {
         this._model = model;
     }
@@ -31,8 +31,8 @@ class AuthController {
                 });
             }
             const user = existsUser.toObject();
-            const accessToken = authService.generateToken(user, this.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
-            const refreshToken = authService.generateToken(user, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+            const accessToken = authService.generateToken(user, this.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '1d', algorithm: 'HS256' });
+            const refreshToken = authService.generateToken(user, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d', algorithm: 'HS256' });
             return res.status(201).json({
                 status: true,
                 message: 'login success.',
