@@ -11,8 +11,8 @@ export default class AuthController
 {
     protected _model: Model<IUser>;
     
-    private JWT_ACCESS_TOKEN_SECRET: string = process.env.JWT_ACCESS_TOKEN_SECRET || '';
-    private JWT_REFRESH_TOKEN_SECRET: string = process.env.JWT_REFRESH_TOKEN_SECRET || '';
+    private JWT_ACCESS_TOKEN_SECRET: string = process.env.JWT_ACCESS_TOKEN_SECRET as string;
+    private JWT_REFRESH_TOKEN_SECRET: string = process.env.JWT_REFRESH_TOKEN_SECRET as string;
 
     constructor(model: Model<IUser>) {
         this._model = model;
@@ -41,8 +41,8 @@ export default class AuthController
 
             const user: object = existsUser.toObject();
 
-            const accessToken = authService.generateToken(user, this.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
-            const refreshToken = authService.generateToken(user, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+            const accessToken = authService.generateToken(user, this.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '1d', algorithm: 'HS256' });
+            const refreshToken = authService.generateToken(user, this.JWT_REFRESH_TOKEN_SECRET, { expiresIn: '7d', algorithm: 'HS256' });
 
             return res.status(201).json({
                 status: true,

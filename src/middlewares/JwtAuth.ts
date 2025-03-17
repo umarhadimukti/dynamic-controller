@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import AuthService from "../libs/AuthService";
+import { JwtPayload } from "jsonwebtoken";
 
 declare module "express" {
     export interface Request {
@@ -19,12 +20,13 @@ export default async function JwtAuth (req: Request, res: Response, next: NextFu
     }
 
     const token: string = authorization.split(' ')[1];
-    console.log(token)
-    const secretKey: string = process.env.JWT_REFRESH_TOKEN_SECRET as string;
+    const secretKey: string = process.env.JWT_ACCESS_TOKEN_SECRET as string;
     const authService = new AuthService;
 
     try {
-        const jwtDecode = await authService.verifyToken(token, secretKey);
+        const jwtDecode: unknown | JwtPayload = await authService.verifyToken(token, secretKey);
+
+        console.log(jwtDecode)
         req.userData = jwtDecode;
     } catch (err) {
         res.status(401).json({
