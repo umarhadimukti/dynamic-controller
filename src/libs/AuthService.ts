@@ -52,7 +52,7 @@ export default class AuthService
         try {
             return jwt.verify(token, secretKey);
         } catch (err) {
-            return `test: ${err}`
+            throw new Error('invalid or expired token.');
         }
     }
 }

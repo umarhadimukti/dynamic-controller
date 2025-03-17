@@ -18,13 +18,15 @@ export default async function JwtAuth (req: Request, res: Response, next: NextFu
     }
 
     const token: string = authorization.split(' ')[1];
-    const secretKey: string = process.env.JWT_ACCESS_TOKEN_SECRET as string;
+    const secretKey: string = process.env.JWT_REFRESH_TOKEN_SECRET as string;
     const authService = new AuthService;
 
     try {
         const jwtDecode = await authService.verifyToken(token, secretKey);
+        if (!jwtDecode) {
+            throw new Error('token not valid.')
+        }
         validationRequest.userData = jwtDecode;
-        next();
     } catch (err) {
         res.status(401).json({
             status: false,
@@ -32,4 +34,6 @@ export default async function JwtAuth (req: Request, res: Response, next: NextFu
         });
         return;
     }
+
+    next();
 }
