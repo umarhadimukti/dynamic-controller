@@ -48,7 +48,7 @@ class AuthService {
             return jsonwebtoken_1.default.verify(token, secretKey);
         }
         catch (err) {
-            return `test: ${err}`;
+            throw new Error('invalid or expired token.');
         }
     };
 }

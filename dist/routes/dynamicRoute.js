@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const DynamicController_1 = __importDefault(require("../controllers/DynamicController"));
 const express_1 = __importDefault(require("express"));
+const JwtAuth_1 = __importDefault(require("../middlewares/JwtAuth"));
 /**
  *
  * @file - this file used for load models
@@ -12,7 +13,7 @@ const express_1 = __importDefault(require("express"));
 const dynamicRoute = (model) => {
     const router = express_1.default.Router();
     const controller = new DynamicController_1.default(model);
-    router.get('/', (req, res) => {
+    router.get('/', JwtAuth_1.default, (req, res) => {
         controller.index(req, res);
     });
     router.get('/:id', (req, res) => {
