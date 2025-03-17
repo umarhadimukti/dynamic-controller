@@ -1,14 +1,20 @@
 import { Request, Response, NextFunction } from "express";
 import AuthService from "../libs/AuthService";
 
-export default async function JwtAuth (req: Request, res: Response, next: NextFunction) {
-    const { authorization } = req.headers;
+interface ValidationRequest extends Request {
+    userData?: any,
+}
+
+export default async function JwtAuth (req: Request, res: Response, next: NextFunction): Promise<void> {
+    const validationRequest = req as ValidationRequest;
+    const { authorization } = validationRequest.headers;
 
     if (!authorization) {
-        return res.status(401).json({
+        res.status(401).json({
             status: false,
             message: 'unauthorized: no token provided.',
         });
+        return;
     }
 
     const token: string = authorization.split(' ')[1];
@@ -17,13 +23,13 @@ export default async function JwtAuth (req: Request, res: Response, next: NextFu
 
     try {
         const jwtDecode = await authService.verifyToken(token, secretKey);
-        req.userData = jwtDecode;
-
+        validationRequest.userData = jwtDecode;
         next();
     } catch (err) {
-        return res.status(401).json({
+        res.status(401).json({
             status: false,
             message: `unauthorized: ${err instanceof Error ? err.message : err}`,
         });
+        return;
     }
 }
